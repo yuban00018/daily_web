@@ -20,11 +20,11 @@ axios.interceptors.request.use(function(config)
 axios.interceptors.response.use((res) => {
     return res;
 },(error)=>{
-    console.log(Object.assign({},error));
-    //router.push('/').then(res => {console.log(res)});
+    //console.log(Object.assign({},error));
+    router.push('/').then(res => {console.log(res)});
     if(error.response){
         alert(error.response.data.message);
     }
-    //localStorage.clear();
+    localStorage.clear();
     return Promise.reject(error);
 })

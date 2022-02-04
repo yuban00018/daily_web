@@ -73,10 +73,10 @@ export default {
     drawer: false,
     selectedMenu: null,
     menu: [
-      { text: 'Todo', icon: 'mdi-format-list-checks' },
-      { text: 'Plan', icon: 'mdi-pencil-ruler' },
-      { text: 'Statistic', icon: 'mdi-chart-line' },
-      { text: 'Group', icon: 'mdi-account-multiple'}
+      { text: '今日待办', icon: 'mdi-format-list-checks' },
+      { text: '新增待办', icon: 'mdi-pencil-ruler' },
+      { text: '统计数据', icon: 'mdi-chart-line' },
+      //{ text: '小组', icon: 'mdi-account-multiple'}
     ],
   }),
 

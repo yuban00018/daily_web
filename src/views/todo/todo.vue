@@ -17,22 +17,17 @@
       <v-col
           v-for="todo in todoList"
           :key="todo.title"
-          cols="6"
+          cols="col-lg-3 col-md-4 col-sm-12 col-12"
       >
         <v-card>
           <v-card-title v-text="todo.content"></v-card-title>
           <v-card-actions>
-            <v-btn v-if="todo.done==='0'"
-                   text
-                   color="primary"
-                   @click="check(todo.planId,'1');todo.done='1';">
-              Done
-            </v-btn>
-            <v-btn v-if="todo.done!=='0'"
-                   text
-                   color="primary"
-                   @click="check(todo.planId,'0');todo.done='0';">
-              Undo
+            <v-spacer></v-spacer>
+            <v-btn
+                text
+                :color="todo.doneButton==='完成'?'primary':'warning'"
+                @click="updatePlan(todo)">
+              {{ todo.doneButton }}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -42,46 +37,55 @@
 </template>
 
 <script>
-import {Check,GetList} from "@/api/plan";
+import {UpdatePlan, GetList} from "@/api/plan";
+
 export default {
   name: "todo",
-  computed:{
-    rate(){
+  computed: {
+    rate() {
       let done = 0;
-      this.todoList.forEach(item=>{
-        if(item.done==='1')done++;
+      this.todoList.forEach(item => {
+        if (item.done === '1') done++;
       })
-      return "今日完成率 "+Math.round(10000*done/this.todoList.length)/100+"%";
+      return "今日完成率 " + Math.round(10000 * done / this.todoList.length) / 100 + "%";
     }
   },
   mounted() {
     try {
       GetList().then(res => {
         if (res.data.code === 200) {
-          this.todoList = res.data.data;
+          let list = res.data.data;
+          let day = new Date().getDay();
+          list.forEach(todo => {
+            if (todo.type === 'on' && todo.frequency.search(day)!==-1) {
+              todo.doneButton = todo.done === '0' ? '完成' : '撤销'
+              this.todoList.push(todo)
+            }
+          })
         } else {
           this.showError = true;
           this.errorMessage = res.data.message;
         }
       })
-    }catch (e) {
+    } catch (e) {
       this.showError = true;
       this.errorMessage = e.message;
     }
   },
   data: () => {
     return {
-      showError:false,
-      errorMessage:"",
-      todoList: [
-      ]
+      showError: false,
+      errorMessage: "",
+      todoList: []
     }
   },
-  methods:{
-    check(planId,done){
-      Check(planId,done).then(res=>{
-        if(res.data.code!==200){
-          this.showError=true;
+  methods: {
+    updatePlan(todo) {
+      todo.done = todo.done === '0' ? '1' : '0';
+      todo.doneButton = todo.doneButton === '完成' ? '撤销' : '完成';
+      UpdatePlan(todo).then(res => {
+        if (res.data.code !== 200) {
+          this.showError = true;
           this.errorMessage = res.data.message;
         }
       })
