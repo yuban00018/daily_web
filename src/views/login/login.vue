@@ -75,6 +75,7 @@ export default {
           localStorage.setItem("name", res.data.data.name);
           localStorage.setItem("avatar", res.data.data.avatar);
           localStorage.setItem("TokenKey", res.data.data.token); //SetToken不能正常工作
+          localStorage.setItem("signUpDate",res.data.data.signUpDate);
           this.$router.push("/todo")
         } else {
           this.showLoginError = true
