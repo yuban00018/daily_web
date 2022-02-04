@@ -1,23 +1,24 @@
 <template>
   <v-form>
+    <v-alert :value="showLoginError" outlined type="error">账号或密码错误</v-alert>
     <v-container id="loginContainer">
       <v-card ref="form" :loading="isLoading">
-        <v-card-title>Login</v-card-title>
+        <v-card-title>登录</v-card-title>
         <v-card-text>
           <v-text-field
               v-model="name"
-              :rules="[() => !!name || 'This field is required']"
-              label="Username"
-              placeholder="username"
-              hint="Email login is not available"
+              :rules="[() => !!name || '请输入用户名']"
+              label="用户名"
+              placeholder="用户名"
+              hint="请输入用户名而非邮箱"
               required
           ></v-text-field>
           <v-text-field
               v-model="password"
-              :rules="[() => !!password || 'This field is required']"
+              :rules="[() => !!password || '请输入密码']"
               :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
               :type="showPwd ? 'text' : 'password'"
-              label="Password"
+              label="密码"
               name="password-input"
               @click:append="showPwd = !showPwd"
           ></v-text-field>
@@ -29,7 +30,7 @@
               text
               @click="submit"
           >
-            Submit
+            登录
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -39,7 +40,6 @@
 
 <script>
 import {Submit} from "@/api/login";
-import {SetToken} from "@/api/auth";
 
 export default {
   name: "login",
@@ -51,6 +51,7 @@ export default {
       showPwd: false,
       rules: [],
       isLoading:false,
+      showLoginError:false
     }
   },
   methods:{
@@ -59,7 +60,16 @@ export default {
         Submit(this.name, this.password).then(res => {
           this.isLoading = false;
           if (res.data.code === 200) {
-            SetToken(res.data.data.token);
+            this.showLoginError = false;
+            localStorage.setItem("id", res.data.data.id);
+            localStorage.setItem("name",res.data.data.name);
+            localStorage.setItem("avatar",res.data.data.avatar);
+            console.log(res.data.data.token)
+            localStorage.setItem("TokenKey", res.data.data.token); //SetToken不能正常工作
+            this.$router.push("/todo")
+          } else {
+            this.showLoginError = true
+            this.password=""
           }
         })
     },

@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from "./router";
 import vuetify from './plugins/vuetify'
 import axios from 'axios'
+import '@/interceptors'
 axios.defaults.baseURL = '/api' // axios基础路径
 
 Vue.config.productionTip = false
