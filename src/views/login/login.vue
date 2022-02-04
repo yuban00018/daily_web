@@ -1,6 +1,12 @@
 <template>
-  <v-form>
-    <v-alert :value="showLoginError" outlined type="error">账号或密码错误</v-alert>
+  <v-form
+      ref="form"
+      v-model="valid"
+      lazy-validation
+  >
+    <v-alert :value="showLoginError" outlined type="error">
+      {{ errorMessage }}
+    </v-alert>
     <v-container id="loginContainer">
       <v-card ref="form" :loading="isLoading">
         <v-card-title>登录</v-card-title>
@@ -46,32 +52,36 @@ export default {
   computed: {},
   data() {
     return {
+      valid:true,
       name: '',
       password: '',
       showPwd: false,
       rules: [],
-      isLoading:false,
-      showLoginError:false
+      isLoading: false,
+      showLoginError: false,
+      errorMessage: ''
     }
   },
-  methods:{
-    submit(){
+  methods: {
+    submit() {
+      if(!this.$refs.form.validate())
+        return;
       this.isLoading = true;
-        Submit(this.name, this.password).then(res => {
-          this.isLoading = false;
-          if (res.data.code === 200) {
-            this.showLoginError = false;
-            localStorage.setItem("id", res.data.data.id);
-            localStorage.setItem("name",res.data.data.name);
-            localStorage.setItem("avatar",res.data.data.avatar);
-            console.log(res.data.data.token)
-            localStorage.setItem("TokenKey", res.data.data.token); //SetToken不能正常工作
-            this.$router.push("/todo")
-          } else {
-            this.showLoginError = true
-            this.password=""
-          }
-        })
+      Submit(this.name, this.password).then(res => {
+        this.isLoading = false;
+        if (res.data.code === 200) {
+          this.showLoginError = false;
+          localStorage.setItem("id", res.data.data.id);
+          localStorage.setItem("name", res.data.data.name);
+          localStorage.setItem("avatar", res.data.data.avatar);
+          localStorage.setItem("TokenKey", res.data.data.token); //SetToken不能正常工作
+          this.$router.push("/todo")
+        } else {
+          this.showLoginError = true
+          this.errorMessage = "账号或密码错误"
+          this.password = ""
+        }
+      })
     },
   }
 }
