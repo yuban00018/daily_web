@@ -47,7 +47,12 @@ export default {
       this.todoList.forEach(item => {
         if (item.done === '1') done++;
       })
-      return "今日完成率 " + Math.round(10000 * done / this.todoList.length) / 100 + "%";
+      let denominator = this.todoList.length;
+      if(this.todoList.length===0){
+        denominator = 1;
+        done = 1;
+      }
+      return "今日完成率 " + Math.round(10000 * done / denominator) / 100 + "%";
     }
   },
   mounted() {
