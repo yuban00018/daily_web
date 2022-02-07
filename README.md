@@ -1,4 +1,5 @@
 # daily
+daily项目前端，后端同样开源，见：https://github.com/yuban00018/daily_backend
 
 ## Project setup
 ```
