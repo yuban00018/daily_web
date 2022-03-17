@@ -9,3 +9,14 @@ export function Submit(name,password){
         }
     })
 }
+export function Register(form){
+    return axios({
+        method: "POST",
+        url:"/user/register",
+        data:{
+            name:form.name,
+            password:form.password,
+            email:form.email
+        }
+    })
+}

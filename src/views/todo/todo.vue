@@ -1,6 +1,5 @@
 <template>
   <v-container fluid>
-    <v-alert v-text="errorMessage" :value="showError" outlined type="error"></v-alert>
     <v-row dense>
       <v-col cols="12">
         <v-card>
@@ -38,6 +37,7 @@
 
 <script>
 import {UpdatePlan, GetList} from "@/api/plan";
+import {store} from "@/api/commonVar";
 
 export default {
   name: "todo",
@@ -68,19 +68,15 @@ export default {
             }
           })
         } else {
-          this.showError = true;
-          this.errorMessage = res.data.message;
+          store.setMessage(res.data.message);
         }
       })
     } catch (e) {
-      this.showError = true;
-      this.errorMessage = e.message;
+      store.setMessage(e.message);
     }
   },
   data: () => {
     return {
-      showError: false,
-      errorMessage: "",
       todoList: []
     }
   },
@@ -90,8 +86,7 @@ export default {
       todo.doneButton = todo.doneButton === '完成' ? '撤销' : '完成';
       UpdatePlan(todo).then(res => {
         if (res.data.code !== 200) {
-          this.showError = true;
-          this.errorMessage = res.data.message;
+          store.setMessage(res.data.message)
         }
       })
     },
