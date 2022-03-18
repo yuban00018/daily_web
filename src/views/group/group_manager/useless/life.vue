@@ -5,14 +5,14 @@
 </template >
 
 <script >
-import common_group from "./common_group";
+import common_group from "../common_group";
 
 export default {
-  name: "careful",
+  name: "life",
   components: { common_group },
   data(){
     return{
-      lnk_type:"careful",
+      lnk_type:"life",
     }
   },
 }

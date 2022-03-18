@@ -1,5 +1,6 @@
 <template >
   <div>
+    <!--标题-->
     <v-footer
         color="indigo lighten-1"
         padless
@@ -36,40 +37,72 @@
       </v-row>
     </v-footer>
 
-
+    <!--推荐小组部分-->
     <v-row dense>
       <v-col
           v-for="tmp in recommendList"
           :key="tmp.title"
-          cols="col-lg-3 col-md-4 col-sm-12 col-12"
+          cols="col-lg-3 col-md-4 col-sm-12 col-12 pa-6"
       >
         <v-card>
-          <v-card-title v-text="tmp.content"></v-card-title>
+          <v-card-title v-text="tmp.groupName"></v-card-title>
+          <v-card-subtitle v-text="'等级：' + (parseInt((tmp.allexp - 1) / 10) + 1) + '级'"></v-card-subtitle>
+          <v-card-text v-text="tmp.content"></v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
                 text
-                :color="tmp.doneButton==='完成'?'primary':'warning'"
-                @click="updatePlan(tmp)">
-              {{ tmp.doneButton }}
+                :color="'primary'"
+                @click="join(tmp)">
+              加入
+            </v-btn>
+            <v-btn
+                text
+                :color="'warning'"
+                @click="find(tmp)">
+              了解
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
+    <div v-if="recommendListIsEmpty">
+      未找到小组推荐
+    </div>
 
+    <v-alert :value="showGroupRecommendError" outlined type="error">
+      {{ errorMessage }}
+    </v-alert>
     <div id="common_group">
       <router-view></router-view>
     </div>
   </div>
 </template >
 
+
 <script >
+import {GetRecommend} from "../../../api/group";
 export default {
   name: "group_hall",
   mounted() {
     this.myName = localStorage.getItem("name")
     this.header_visible = true;
+    GetRecommend().then(
+        res=> {
+          if (res.data.code === 200) {
+            // console.log(res.data.data);
+            this.recommendList = res.data.data;
+            if (this.recommendList.length === 0)
+              this.recommendListIsEmpty = 1;
+          }
+          else {
+            this.errorMessage = "推荐信息出错";
+            this.showGroupRecommendError = true;
+          }
+        }
+    ).catch(err=>{
+      this.$message.error(err);
+    })
   },
   data() {
     return {
@@ -83,7 +116,10 @@ export default {
       ],
       myName: "",
       recommendList: [],
+      recommendListIsEmpty: 0,
       header_visible: true,
+  showGroupRecommendError: false,
+      errorMessage: "",
     }
   },
   methods: {

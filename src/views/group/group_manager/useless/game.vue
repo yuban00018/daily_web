@@ -5,14 +5,14 @@
 </template >
 
 <script >
-import common_group from "./common_group";
+import common_group from "../common_group";
 
 export default {
-  name: "science",
+  name: "game",
   components: { common_group },
   data(){
     return{
-      lnk_type:"science",
+      lnk_type:"game",
     }
   },
 }

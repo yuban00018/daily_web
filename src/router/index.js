@@ -45,6 +45,11 @@ export default new VueRouter({
                     component: resolve=>require(['@/views/group/group_manager/my_group'],resolve),
                 },
                 {
+                    path:'join_group',
+                    name:'join_group',
+                    component: resolve=>require(['@/views/group/group_manager/join_group'],resolve),
+                },
+                {
                     path:'group_hall',
                     name:'group_hall',
                     component: resolve=>require(['@/views/group/group_manager/group_hall'],resolve),
@@ -52,32 +57,32 @@ export default new VueRouter({
                         {
                             path:'careful',
                             name:'careful',
-                            component: resolve=>require(['@/views/group/group_manager/careful'],resolve),
+                            component: resolve=>require(['@/views/group/group_manager/useless/careful'],resolve),
                         },
                         {
                             path:'happy',
                             name:'happy',
-                            component: resolve=>require(['@/views/group/group_manager/happy'],resolve),
+                            component: resolve=>require(['@/views/group/group_manager/useless/happy'],resolve),
                         },
                         {
                             path:'life',
                             name:'life',
-                            component: resolve=>require(['@/views/group/group_manager/life'],resolve),
+                            component: resolve=>require(['@/views/group/group_manager/useless/life'],resolve),
                         },
                         {
                             path:'game',
                             name:'game',
-                            component: resolve=>require(['@/views/group/group_manager/game'],resolve),
+                            component: resolve=>require(['@/views/group/group_manager/useless/game'],resolve),
                         },
                         {
                             path:'science',
                             name:'science',
-                            component: resolve=>require(['@/views/group/group_manager/science'],resolve),
+                            component: resolve=>require(['@/views/group/group_manager/useless/science'],resolve),
                         },
                         {
                             path:'pe',
                             name:'pe',
-                            component: resolve=>require(['@/views/group/group_manager/pe'],resolve),
+                            component: resolve=>require(['@/views/group/group_manager/useless/pe'],resolve),
                         },
                     ]
                 },
