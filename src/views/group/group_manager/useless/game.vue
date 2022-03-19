@@ -1,7 +1,7 @@
 <template >
-  <div>
+  <v-container>
     <common_group :lnk_type="lnk_type"></common_group>
-  </div>
+  </v-container>
 </template >
 
 <script >

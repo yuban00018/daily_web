@@ -50,6 +50,11 @@ export default new VueRouter({
                     component: resolve=>require(['@/views/group/group_manager/join_group'],resolve),
                 },
                 {
+                    path:'group_info',
+                    name:'group_info',
+                    component: resolve=>require(['@/views/group/group_manager/group_info'],resolve),
+                },
+                {
                     path:'group_hall',
                     name:'group_hall',
                     component: resolve=>require(['@/views/group/group_manager/group_hall'],resolve),
@@ -83,6 +88,11 @@ export default new VueRouter({
                             path:'pe',
                             name:'pe',
                             component: resolve=>require(['@/views/group/group_manager/useless/pe'],resolve),
+                        },
+                        {
+                            path:'default',
+                            name:'default',
+                            component: resolve=>require(['@/views/group/group_manager/group_hall_default'],resolve),
                         },
                     ]
                 },

@@ -1,7 +1,7 @@
 <template >
-  <div>
+  <v-container>
     mygroup
-  </div>
+  </v-container>
 </template >
 
 <script >

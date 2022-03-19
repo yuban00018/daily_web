@@ -2,7 +2,6 @@
   <v-container fluid>
     <v-banner
       single-line
-      @click:icon="alert"
   >
     <v-icon
         slot="icon"
@@ -17,18 +16,17 @@
       <v-btn
           color="primary"
           text
-          @click="exhibitionStyle = !exhibitionStyle"
+          @click="exhibitionStyle = !exhibitionStyle;"
       >
         Exhibition Settings
       </v-btn>
     </template>
   </v-banner>
 
-
-    <div v-if="!myJoinGroupInfoIsEmpty">
+    <div v-if="!myJoinGroupInfoIsEmpty && exhibitionStyle">
       <v-card
           v-for="i in myJoinGroupInfo"
-          :key="i"
+          :key="i.groupId"
           class="d-flex mb-12 justify-center"
           flat
       >
@@ -56,22 +54,24 @@
 
           <v-card-text
               id="woc3"
+              v-text="changeContent(i.content, 58)"
           >
-            {{ i.content }}
           </v-card-text>
 
-          <v-card-actions id="woc4">
+          <v-card-actions class="woc4">
             {{ kinds[i.kind - 1] }}
             <v-spacer></v-spacer>
             <v-btn
                 text
                 color="primary"
+                @click="find(i.groupId)"
             >
               进入
             </v-btn>
             <v-btn
                 text
                 color="warning"
+                @click="exit(i)"
             >
               退出
             </v-btn>
@@ -79,6 +79,49 @@
         </v-card>
       </v-card>
     </div>
+
+
+    <div v-if="!myJoinGroupInfoIsEmpty && !exhibitionStyle">
+      <v-row dense>
+        <v-col
+            v-for="tmp in myJoinGroupInfo"
+            :key="tmp.groupId"
+            cols="col-lg-3 col-md-6 col-sm-12 col-12 pa-6"
+        >
+          <v-card min-height="195">
+            <v-card-title>
+              {{ tmp.groupName }}
+            </v-card-title>
+            <v-card-subtitle>
+              成员数：{{ tmp.memberNumber }}
+              &nbsp;&nbsp;&nbsp;
+              等级：{{ parseInt((tmp.allexp - 1) / 10) + 1 }}
+            </v-card-subtitle>
+            <v-card-text v-text="changeContent(tmp.content, 80)"></v-card-text>
+            <v-card-actions
+              class="woc4"
+            >
+              {{ kinds[tmp.kind - 1] }}
+              <v-spacer></v-spacer>
+              <v-btn
+                  text
+                  color="primary"
+                  @click="find(tmp.groupId)"
+              >
+                进入
+              </v-btn>
+              <v-btn
+                  text
+                  color="warning"
+              >
+                退出
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
+
 
     <card v-if="myJoinGroupInfoIsEmpty">
         <v-card-title>
@@ -96,7 +139,8 @@
 </template>
 
 <script >
-import {getGroupInfoById} from "../../../api/group";
+import {GetGroupInfoById} from "../../../api/group";
+import {UserExitGroup} from "../../../api/group";
 export default {
   name: "join_group",
   data() {
@@ -112,7 +156,7 @@ export default {
   mounted() {
     this.myName = localStorage.getItem("name")
     this.myId = localStorage.getItem("id");
-    getGroupInfoById(this.myId).then (
+    GetGroupInfoById(this.myId).then (
       res => {
         // console.log(res.data.data);
         if (res.data.code === 200) {
@@ -125,6 +169,45 @@ export default {
       this.$message.error(err);
     })
   },
+  methods: {
+    changeContent(words, len) {
+      if (words.length > len) {
+        words = words.substr(0, len);
+        words += ". . .";
+      }
+      return words;
+    },
+    find(tmp) {
+      // console.log("tmp: " + tmp);
+      this.$router.replace({path: '/group/group_info', query: {group_id: tmp}})
+          .catch((err) => {
+            this.$message.error(err);
+          });
+    },
+    exit(tmp) {
+      UserExitGroup(localStorage.getItem("id"), tmp.groupId).then(
+          res => {
+            // console.log("res.data.code: " + res.data.code);
+            if (res.data.code === 200) {
+              alert("退出成功！");
+              this.reload();
+            }
+            else if (res.data.code === 403) {
+              alert("您还未加入该小组！");
+              this.reload();
+            }
+          }
+      ).catch(err=>{
+        this.$message.error(err);
+        this.reload();
+      })
+    },
+    reload: function (){
+      var {search,href} = window.location;
+      href = href.replace(/&?t_reload=(\d+)/g,'')
+      window.location.href = href+(search?'&':'?')+"t_reload="+new Date().getTime()
+    }
+  }
 }
 </script >
 
@@ -152,7 +235,7 @@ export default {
   font-size: medium;
   min-height: 50%;
 }
-#woc4 {
+.woc4 {
   display: flex;
   align-items: center;
   font-size: 92%;

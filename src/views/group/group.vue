@@ -60,7 +60,7 @@ export default {
       items: [
         { title: '我创建的', icon: 'mdi-account', nav: 'my_group' },
         { title: '我加入的', icon: 'mdi-controller-classic', nav: 'join_group' },
-        { title: '发现小组', icon: 'mdi-account-group-outline', nav: 'group_hall' },
+        { title: '发现小组', icon: 'mdi-account-group-outline', nav: 'group_hall/default' },
       ],
       mini: false,
     }
@@ -82,6 +82,7 @@ export default {
       this.$router.replace("/group/" + path).catch((err) => {
         err;
       });
+      // location.reload();
     },
   },
 }
