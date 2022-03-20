@@ -126,7 +126,7 @@ export default {
               alert("您已经加入过了！")
             }
             else if (res.data.code === 405) {
-              alert("数据库错误！")
+              alert("数据信息错误！")
             }
           }
       ).catch(err=>{

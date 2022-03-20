@@ -90,3 +90,81 @@ export function UserFailGroupPlan(userId, planId){
         data: {}
     })
 }
+
+
+
+export function UserPossessGroupInfo(userId){
+    // console.log("/group/userPossessGroupInfo?userId=" + userId);
+    return axios({
+        method: "GET",
+        url:"/group/userPossessGroupInfo?userId=" + userId,
+        data: {}
+    })
+}
+
+
+export function UserDelPossessGroup(userId, groupId){
+    // console.log("/group/userDelPossessGroup?userId=" + userId + '&groupId=' + groupId);
+    return axios({
+        method: "GET",
+        url:"/group/userDelPossessGroup?userId=" + userId + '&groupId=' + groupId,
+        data: {}
+    })
+}
+
+
+export function CreateOrModifyGroupInfo(tmp){
+    // console.log(tmp);
+    return axios({
+        method: "POST",
+        url:"/group/createOrModifyGroupInfo",
+        data: {
+            groupId: tmp.groupId,
+            allexp: tmp.allexp,
+            recexp: tmp.recexp,
+            leaderId: tmp.leaderId,
+            content: tmp.content,
+            memberNumber: tmp.memberNumber,
+            kind: tmp.kind,
+            groupName: tmp.groupName,
+        }
+    })
+}
+
+
+
+export function GetPlanInfoByPlanId(planId){
+    console.log("/group/getPlanInfoByPlanId?planId=" + planId);
+    return axios({
+        method: "GET",
+        url:"/group/getPlanInfoByPlanId?planId=" + planId,
+        data: {}
+    })
+}
+
+
+export function CreateOrModifyPlanInfo(tmp){
+    console.log(tmp);
+    return axios({
+        method: "POST",
+        url:"/group/createOrModifyPlanInfo",
+        data: {
+            groupId: tmp.groupId,
+            planId: tmp.planId,
+            userId: tmp.userId,
+            content: tmp.content,
+            planName: tmp.planName,
+            frequency: tmp.frequency,
+        }
+    })
+}
+
+
+export function UserDelPlanInfo(userId, planId){
+    console.log("/group/userDelPlanInfo?userId=" + userId + '&planId=' + planId);
+    return axios({
+        method: "GET",
+        url:"/group/userDelPlanInfo?userId=" + userId + '&planId=' + planId,
+        data: {}
+    })
+}

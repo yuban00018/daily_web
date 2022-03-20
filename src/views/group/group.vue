@@ -5,7 +5,7 @@
           :mini-variant.sync="mini"
           permanent
           id="drawer"
-          height="950"
+          height="1150"
           width="16%"
       >
         <v-list-item class="px-2">
@@ -58,7 +58,7 @@ export default {
     return {
       myName: "",
       items: [
-        { title: '我创建的', icon: 'mdi-account', nav: 'my_group' },
+        { title: '我创建的', icon: 'mdi-account', nav: 'my_group/show' },
         { title: '我加入的', icon: 'mdi-controller-classic', nav: 'join_group' },
         { title: '发现小组', icon: 'mdi-account-group-outline', nav: 'group_hall/default' },
       ],

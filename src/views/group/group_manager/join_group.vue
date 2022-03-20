@@ -113,6 +113,7 @@
               <v-btn
                   text
                   color="warning"
+                  @click="exit(tmp)"
               >
                 退出
               </v-btn>

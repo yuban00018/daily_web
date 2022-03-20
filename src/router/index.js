@@ -40,9 +40,26 @@ export default new VueRouter({
             component: resolve=>require(['@/views/group/group'],resolve),
             children: [
                 {
+                    path:'publish_task',
+                    name:'publish_task',
+                    component: resolve=>require(['@/views/group/group_manager/publish_task'],resolve),
+                },
+                {
                     path:'my_group',
                     name:'my_group',
-                    component: resolve=>require(['@/views/group/group_manager/my_group'],resolve),
+                    component: resolve=>require(['@/views/group/group_manager/my_group/my_group'],resolve),
+                    children: [
+                        {
+                            path:'show',
+                            name:'show',
+                            component: resolve=>require(['@/views/group/group_manager/my_group/my_group_show'],resolve),
+                        },
+                        {
+                            path:'create_modify',
+                            name:'create_modify',
+                            component: resolve=>require(['@/views/group/group_manager/my_group/my_group_create_modify'],resolve),
+                        },
+                    ]
                 },
                 {
                     path:'join_group',

@@ -1,5 +1,33 @@
 <template >
   <v-container>
+    <v-banner
+        single-line
+        v-if="isLeader"
+    >
+      <v-icon
+          slot="icon"
+          color="warning"
+          size="36"
+      >
+        mdi-home-analytics
+      </v-icon>
+      <v-card-text class="text-h5">
+        欢迎组长 {{ this.groupInfo.leaderName }}！
+      </v-card-text>
+      <template v-slot:actions>
+        <v-btn
+            color="warning"
+            text
+            @click="publish()"
+        >
+          <v-card-text class="font-weight-bold text-subtitle-1">
+            发布小组任务
+          </v-card-text>
+        </v-btn>
+      </template>
+    </v-banner>
+
+
     <v-container
         class="d-flex justify-center"
         v-if="isComputer"
@@ -17,35 +45,35 @@
                 小组名：
               </div>
               <div class="font-weight-bold blue--text text-h6" style="display: inline-block;">
-                {{ this.groupInfo.groupName }}
+                {{ groupInfo.groupName }}
               </div>
             </v-list-item-title>
-            <v-list-item-subtitle>小组id：{{ this.groupInfo.groupId }}</v-list-item-subtitle>
+            <v-list-item-subtitle>小组id：{{ groupInfo.groupId }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>管理员：{{ this.groupInfo.leaderName }}</v-list-item-title>
-            <v-list-item-subtitle>管理员id：{{ this.groupInfo.leaderId }}</v-list-item-subtitle>
+            <v-list-item-title>管理员：{{ groupInfo.leaderName }}</v-list-item-title>
+            <v-list-item-subtitle>管理员id：{{ groupInfo.leaderId }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>小组等级：{{ parseInt((this.groupInfo.allexp - 1) / 10 + 1) }}</v-list-item-title>
+            <v-list-item-title>小组等级：{{ parseInt((groupInfo.allexp - 1) / 10 + 1) }}</v-list-item-title>
             <v-list-item-subtitle>
-              近期活跃度：{{ this.groupInfo.recexp }}
+              近期活跃度：{{ groupInfo.recexp }}
             </v-list-item-subtitle>
-            <v-list-item-subtitle>成员数量：{{ this.groupInfo.memberNumber }}</v-list-item-subtitle>
+            <v-list-item-subtitle>成员数量：{{ groupInfo.memberNumber }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
         <v-list-item two-line>
           <v-list-item-content>
-            <v-list-item-title>分类：{{ this.kinds[this.groupInfo.kind] }}</v-list-item-title>
+            <v-list-item-title>分类：{{ kinds[groupInfo.kind] }}</v-list-item-title>
             <v-list-item-subtitle>
-              小队宣言：{{ this.groupInfo.content }}
+              小队宣言：{{ groupInfo.content }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -113,6 +141,22 @@
             <v-spacer></v-spacer>
             <v-btn
                 text
+                color="green"
+                @click="modify(i);"
+                v-if="isLeader"
+            >
+              修改
+            </v-btn>
+            <v-btn
+                text
+                color="warning"
+                @click="del(i);"
+                v-if="isLeader"
+            >
+              删除
+            </v-btn>
+            <v-btn
+                text
                 color="primary"
                 @click="dealWith(i);"
             >
@@ -140,7 +184,7 @@
 </template >
 
 <script >
-import {GetGroupInfoByGroupId} from "../../../api/group";
+import {GetGroupInfoByGroupId, UserDelPlanInfo} from "../../../api/group";
 import {GetGroupPlanByGroupId} from "../../../api/group";
 import {judge} from "../../../api/judge";
 import {UserDoGroupPlan} from "../../../api/group";
@@ -181,19 +225,27 @@ export default {
         4: '科技',
         5: '体育',
       },
+      isLeader: 1,
     }
   },
   mounted() {
     this.groupId = Number(this.$route.query.group_id);
+    if (isNaN(this.groupId)) {
+      alert('操作有误！')
+      this.$router.go(-1);
+    }
     GetGroupInfoByGroupId(this.groupId).then(
         res => {
           if (res.data.code === 200) {
             this.groupInfo = res.data.data;
+            localStorage.setItem('groupId', this.groupInfo.groupId);
             this.items.push(this.arrays[parseInt(this.groupInfo.kind) * 2 - 1]);
             this.items.push(this.arrays[parseInt(this.groupInfo.kind) * 2 - 2]);
             this.items.reverse();
             // console.log(parseInt(this.groupInfo.kind) * 2 - 1);
             // console.log(this.items[3]);
+            if (isNaN(Number(this.$route.query.leader)))
+              this.isLeader = 0;
           }
           else {
             this.errorMessage = "未找到该小组！";
@@ -261,7 +313,40 @@ export default {
           tmp.type = 'off';
         })
       }
-    }
+    },
+    publish() {
+      this.jmp('publish_task');
+    },
+    modify(i) {
+      this.jmp('publish_task?plan_id=' + i.planId);
+    },
+    del(i) {
+      UserDelPlanInfo(localStorage.getItem('id'), i.planId).then(
+          res => {
+            if (res.data.code === 200) {
+              alert('删除成功！');
+              this.reload();
+            }
+            else {
+              alert("出错！");
+              this.reload();
+            }
+          }
+      ).catch(err=>{
+        this.$message.error(err);
+        this.reload();
+      })
+    },
+    jmp(path) {
+      this.$router.replace(path).catch((err) => {
+        err;
+      });
+    },
+    reload: function (){
+      var {search,href} = window.location;
+      href = href.replace(/&?t_reload=(\d+)/g,'')
+      window.location.href = href+(search?'&':'?')+"t_reload="+new Date().getTime()
+    },
   }
 }
 </script >
