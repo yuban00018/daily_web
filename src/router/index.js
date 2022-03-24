@@ -37,7 +37,84 @@ export default new VueRouter({
         {
             path:'/group',
             name:'group',
-            component: resolve=>require(['@/views/group/group'],resolve)
+            component: resolve=>require(['@/views/group/group'],resolve),
+            children: [
+                {
+                    path:'publish_task',
+                    name:'publish_task',
+                    component: resolve=>require(['@/views/group/group_manager/publish_task'],resolve),
+                },
+                {
+                    path:'my_group',
+                    name:'my_group',
+                    component: resolve=>require(['@/views/group/group_manager/my_group/my_group'],resolve),
+                    children: [
+                        {
+                            path:'show',
+                            name:'show',
+                            component: resolve=>require(['@/views/group/group_manager/my_group/my_group_show'],resolve),
+                        },
+                        {
+                            path:'create_modify',
+                            name:'create_modify',
+                            component: resolve=>require(['@/views/group/group_manager/my_group/my_group_create_modify'],resolve),
+                        },
+                    ]
+                },
+                {
+                    path:'join_group',
+                    name:'join_group',
+                    component: resolve=>require(['@/views/group/group_manager/join_group'],resolve),
+                },
+                {
+                    path:'group_info',
+                    name:'group_info',
+                    component: resolve=>require(['@/views/group/group_manager/group_info'],resolve),
+                },
+                {
+                    path:'group_hall',
+                    name:'group_hall',
+                    component: resolve=>require(['@/views/group/group_manager/group_hall'],resolve),
+                    children: [
+                        {
+                            path:'careful',
+                            name:'careful',
+                            component: resolve=>require(['@/views/group/group_manager/useless/careful'],resolve),
+                        },
+                        {
+                            path:'happy',
+                            name:'happy',
+                            component: resolve=>require(['@/views/group/group_manager/useless/happy'],resolve),
+                        },
+                        {
+                            path:'life',
+                            name:'life',
+                            component: resolve=>require(['@/views/group/group_manager/useless/life'],resolve),
+                        },
+                        {
+                            path:'game',
+                            name:'game',
+                            component: resolve=>require(['@/views/group/group_manager/useless/game'],resolve),
+                        },
+                        {
+                            path:'science',
+                            name:'science',
+                            component: resolve=>require(['@/views/group/group_manager/useless/science'],resolve),
+                        },
+                        {
+                            path:'pe',
+                            name:'pe',
+                            component: resolve=>require(['@/views/group/group_manager/useless/pe'],resolve),
+                        },
+                        {
+                            path:'default',
+                            name:'default',
+                            component: resolve=>require(['@/views/group/group_manager/group_hall_default'],resolve),
+                        },
+                    ]
+                },
+
+            ]
         }
     ]
 })

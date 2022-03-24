@@ -14,7 +14,6 @@
                 v-model="valid"
                 lazy-validation
             >
-
               <v-text-field
                   v-model="plan"
                   :counter="25"

@@ -33,6 +33,7 @@
     </v-navigation-drawer>
     </v-expand-x-transition>
 
+
     <v-app-bar
         app
         clipped-left
@@ -123,7 +124,7 @@ export default {
       { text: '今日待办', icon: 'mdi-format-list-checks' },
       { text: '新增待办', icon: 'mdi-pencil-ruler' },
       { text: '统计数据', icon: 'mdi-chart-line' },
-      //{ text: '小组', icon: 'mdi-account-multiple'}
+      { text: '小组', icon: 'mdi-human-queue' },
     ],
     verticalList: [{text:'登出',icon: 'mdi-logout'}]
   }),
@@ -131,7 +132,7 @@ export default {
   watch: {
     selectedMenu () {
       this.drawer = false
-      let path = ['/todo','/plan','statistic','Group']
+      let path = ['/todo','/plan','/statistic','/group']
       this.$router.push(path[this.selectedMenu])
     },
     selectedVertical(){
