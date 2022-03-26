@@ -112,7 +112,8 @@
 
 <script >
 
-import {CreateOrModifyGroupInfo, GetGroupInfoByGroupId} from "../../../../api/group";
+import {CreateOrModifyGroupInfo, GetGroupInfoByGroupId} from "@/api/group";
+import {store} from "@/api/commonVar";
 
 export default {
   name: "my_group_create_modify",
@@ -150,7 +151,7 @@ export default {
               this.memberNumber = res.data.data.memberNumber;
             }
             else {
-              alert("未找到该小组！请返回！");
+              store.setMessage("未找到该小组！请返回！");
             }
           }
       ).catch(err=>{
@@ -175,12 +176,12 @@ export default {
             // console.log(res);
             if (res.data.code === 200) {
               if (tmp.groupId === -1)
-                alert("创建小组成功！");
+                store.setMessage("创建小组成功！");
               else
-                alert("修改小组成功！");
+                store.setMessage("修改小组成功！");
             }
             else if (res.data.code !== 200) {
-              alert("失败！");
+              store.setMessage("失败！");
             }
           }
       ).catch(err=>{

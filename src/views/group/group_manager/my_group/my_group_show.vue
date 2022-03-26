@@ -82,8 +82,9 @@
 </template >
 
 <script >
-import {UserPossessGroupInfo} from "../../../../api/group";
-import {UserDelPossessGroup} from "../../../../api/group";
+import {UserPossessGroupInfo} from "@/api/group";
+import {UserDelPossessGroup} from "@/api/group";
+import {store} from "@/api/commonVar";
 export default {
   name: "my_group_show",
   data() {
@@ -115,7 +116,7 @@ export default {
             this.sliceGroupInfoArr = this.groupInfoArr.slice((this.currentPage-1) * 3, this.currentPage * 3);
           }
           else if (res.data.code === 403) {
-            alert("当前用户不存在");
+            store.setMessage("当前用户不存在");
           }
         }
     ).catch(err=>{
@@ -134,14 +135,14 @@ export default {
       UserDelPossessGroup(localStorage.getItem('id'), tmp.groupId).then(
           res => {
             if (res.data.code === 200) {
-              alert('删除成功！')
+              store.setMessage('删除成功！')
               this.reload();
             } else if (res.data.code === 403) {
-              alert('无权限or小组不存在！');
+              store.setMessage('无权限or小组不存在！');
             } else if (res.data.code === 405) {
-              alert('数据错误！');
+              store.setMessage('数据错误！');
             } else {
-              alert('未知错误');
+              store.setMessage('未知错误');
             }
           }
       )

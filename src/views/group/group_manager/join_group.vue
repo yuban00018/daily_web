@@ -140,8 +140,9 @@
 </template>
 
 <script >
-import {GetGroupInfoById} from "../../../api/group";
-import {UserExitGroup} from "../../../api/group";
+import {GetGroupInfoById} from "@/api/group";
+import {UserExitGroup} from "@/api/group";
+import {store} from "@/api/commonVar";
 export default {
   name: "join_group",
   data() {
@@ -190,11 +191,11 @@ export default {
           res => {
             // console.log("res.data.code: " + res.data.code);
             if (res.data.code === 200) {
-              alert("退出成功！");
+              store.setMessage("退出成功！");
               this.reload();
             }
             else if (res.data.code === 403) {
-              alert("您还未加入该小组！");
+              store.setMessage("您还未加入该小组！");
               this.reload();
             }
           }

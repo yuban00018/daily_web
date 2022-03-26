@@ -69,7 +69,8 @@
 </template >
 
 <script >
-import {GetRecommend, UserJoinGroup} from "../../../api/group";
+import {GetRecommend, UserJoinGroup} from "@/api/group";
+import {store} from "@/api/commonVar";
 export default {
   name: "group_hall_default",
   mounted() {
@@ -120,13 +121,13 @@ export default {
           res => {
             // console.log("res.data.code: " + res.data.code);
             if (res.data.code === 200) {
-              alert("加入成功！")
+              store.setMessage("加入成功！")
             }
             else if (res.data.code === 403) {
-              alert("您已经加入过了！")
+              store.setMessage("您已经加入过了！")
             }
             else if (res.data.code === 405) {
-              alert("数据信息错误！")
+              store.setMessage("数据信息错误！")
             }
           }
       ).catch(err=>{

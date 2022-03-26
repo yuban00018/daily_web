@@ -184,11 +184,12 @@
 </template >
 
 <script >
-import {GetGroupInfoByGroupId, UserDelPlanInfo} from "../../../api/group";
-import {GetGroupPlanByGroupId} from "../../../api/group";
-import {judge} from "../../../api/judge";
-import {UserDoGroupPlan} from "../../../api/group";
-import {UserFailGroupPlan} from "../../../api/group";
+import {GetGroupInfoByGroupId, UserDelPlanInfo} from "@/api/group";
+import {GetGroupPlanByGroupId} from "@/api/group";
+import {judge} from "@/api/judge";
+import {UserDoGroupPlan} from "@/api/group";
+import {UserFailGroupPlan} from "@/api/group";
+import {store} from "@/api/commonVar";
 
 export default {
   name: "group_info",
@@ -231,7 +232,7 @@ export default {
   mounted() {
     this.groupId = Number(this.$route.query.group_id);
     if (isNaN(this.groupId)) {
-      alert('操作有误！')
+      store.setMessage('操作有误！')
       this.$router.go(-1);
     }
     GetGroupInfoByGroupId(this.groupId).then(
@@ -287,7 +288,7 @@ export default {
         UserFailGroupPlan(localStorage.getItem("id"), tmp.planId).then(
             res => {
               if (res.data.code !== 200) {
-                alert("数据错误！")
+                store.setMessage("数据错误！")
                 tmp.type = "on";
               }
               else
@@ -302,7 +303,7 @@ export default {
         UserDoGroupPlan(localStorage.getItem("id"), tmp.planId).then(
             res => {
               if (res.data.code !== 200) {
-                alert("您还没有加入该组！");
+                store.setMessage("您还没有加入该组！");
                 tmp.type = 'off';
               }
               else
@@ -324,11 +325,11 @@ export default {
       UserDelPlanInfo(localStorage.getItem('id'), i.planId).then(
           res => {
             if (res.data.code === 200) {
-              alert('删除成功！');
+              store.setMessage('删除成功！');
               this.reload();
             }
             else {
-              alert("出错！");
+              store.setMessage("出错！");
               this.reload();
             }
           }
