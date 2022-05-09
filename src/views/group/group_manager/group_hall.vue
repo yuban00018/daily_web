@@ -42,6 +42,7 @@ export default {
         { name: '电竞', lnk: 'game' },
         { name: '科技', lnk: 'science' },
         { name: '体育', lnk: 'pe' },
+        { name: '排行榜', lnk: 'rank' },
       ],
     }
   },

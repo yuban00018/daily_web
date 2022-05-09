@@ -111,6 +111,11 @@ export default new VueRouter({
                             name:'default',
                             component: resolve=>require(['@/views/group/group_manager/group_hall_default'],resolve),
                         },
+                        {
+                            path:'rank',
+                            name:'rank',
+                            component: resolve=>require(['@/views/group/group_manager/group_rank'],resolve),
+                        },
                     ]
                 },
 

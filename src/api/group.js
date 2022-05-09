@@ -134,7 +134,7 @@ export function CreateOrModifyGroupInfo(tmp){
 
 
 export function GetPlanInfoByPlanId(planId){
-    console.log("/group/getPlanInfoByPlanId?planId=" + planId);
+    // console.log("/group/getPlanInfoByPlanId?planId=" + planId);
     return axios({
         method: "GET",
         url:"/group/getPlanInfoByPlanId?planId=" + planId,
@@ -144,7 +144,7 @@ export function GetPlanInfoByPlanId(planId){
 
 
 export function CreateOrModifyPlanInfo(tmp){
-    console.log(tmp);
+    // console.log(tmp);
     return axios({
         method: "POST",
         url:"/group/createOrModifyPlanInfo",
@@ -161,10 +161,21 @@ export function CreateOrModifyPlanInfo(tmp){
 
 
 export function UserDelPlanInfo(userId, planId){
-    console.log("/group/userDelPlanInfo?userId=" + userId + '&planId=' + planId);
+    // console.log("/group/userDelPlanInfo?userId=" + userId + '&planId=' + planId);
     return axios({
         method: "GET",
         url:"/group/userDelPlanInfo?userId=" + userId + '&planId=' + planId,
+        data: {}
+    })
+}
+
+
+
+export function GetGroupRank(){
+    // console.log("/group/getGroupRank");
+    return axios({
+        method: "GET",
+        url:"/group/getGroupRank",
         data: {}
     })
 }

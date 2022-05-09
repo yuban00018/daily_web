@@ -1,5 +1,5 @@
 <template >
-  <div>
+  <v-container>
     <v-row
       justify="center"
       no-gutters
@@ -65,7 +65,7 @@
     <v-alert :value="showGroupRecommendError" outlined type="error">
       {{ errorMessage }}
     </v-alert>
-  </div>
+  </v-container>
 </template >
 
 <script >
