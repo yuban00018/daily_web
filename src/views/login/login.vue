@@ -77,6 +77,10 @@ export default {
           localStorage.setItem("TokenKey", res.data.data.token); //SetToken不能正常工作
           localStorage.setItem("signUpDate",res.data.data.signUpDate);
           this.$router.push("/todo")
+        } else if (res.data.code === 405) {
+          this.showLoginError = true
+          this.errorMessage = "用户被封"
+          this.password = ""
         } else {
           this.showLoginError = true
           this.errorMessage = "账号或密码错误"
