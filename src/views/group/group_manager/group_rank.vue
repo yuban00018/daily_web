@@ -37,13 +37,22 @@ export default {
           if (res.data.code === 200) {
             // console.log(res.data.data);
             this.dessertsTmp = res.data.data;
+            for (var i = 0; i < this.dessertsTmp.length; i++) {
+              for (var j = 0; j < this.dessertsTmp.length - i - 1; j++) {
+                if (this.dessertsTmp[j].rank > this.dessertsTmp[j + 1].rank) {
+                  let tmp = this.dessertsTmp[j];
+                  this.dessertsTmp[j] = this.dessertsTmp[j + 1];
+                  this.dessertsTmp[j + 1] = tmp;
+                }
+              }
+            }
             for (let i = 0; i < this.dessertsTmp.length; i++) {
               let tmp = {};
               tmp.rank = this.dessertsTmp[i].rank;
               tmp.groupName = this.dessertsTmp[i].groupName;
               tmp.groupId = this.dessertsTmp[i].groupId;
               tmp.adminName = this.dessertsTmp[i].adminName;
-              tmp.groupExp = parseInt((this.dessertsTmp[i].groupExp - 1) / 10 + 1);
+              tmp.groupExp = parseInt(parseInt((this.dessertsTmp[i].groupExp - 1) / 10) + 1);
               this.desserts.push(tmp);
             }
           }

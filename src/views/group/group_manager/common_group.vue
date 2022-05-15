@@ -14,7 +14,7 @@
           <v-card-title>
             {{ tmp.groupName }}
           </v-card-title>
-          <v-card-subtitle v-text="'等级：' + (parseInt((tmp.allexp - 1) / 10) + 1) + '级'"></v-card-subtitle>
+          <v-card-subtitle v-text="'等级：' + (parseInt(parseInt((tmp.allexp - 1) / 10)) + 1) + '级'"></v-card-subtitle>
           <v-card-text
               style="min-height: 90px"
           >

@@ -95,7 +95,7 @@
             <v-card-subtitle>
               成员数：{{ tmp.memberNumber }}
               &nbsp;&nbsp;&nbsp;
-              等级：{{ parseInt((tmp.allexp - 1) / 10) + 1 }}
+              等级：{{ parseInt(parseInt((tmp.allexp - 1) / 10)) + 1 }}
             </v-card-subtitle>
             <v-card-text v-text="changeContent(tmp.content, 80)"></v-card-text>
             <v-card-actions
@@ -195,6 +195,10 @@ export default {
             }
             else if (res.data.code === 403) {
               alert("您还未加入该小组！");
+              this.reload();
+            }
+            else if (res.data.code === 405) {
+              alert("组长无法退出！若要退出请到管理页面删除小组！");
               this.reload();
             }
           }

@@ -22,7 +22,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-subtitle class="font-weight-medium grey--text text-subtitle-2">
-              小组等级：{{ parseInt((tmp.allexp - 1) / 10 + 1) }}  近期活跃度：{{ tmp.recexp }}
+              小组等级：{{ parseInt(parseInt((tmp.allexp - 1) / 10) + 1) }}  近期活跃度：{{ tmp.recexp }}
             </v-list-item-subtitle>
             <v-list-item-subtitle class="font-weight-medium grey--text text-subtitle-2">
               成员数量：{{ tmp.memberNumber }} &nbsp; 分类：{{ kinds[tmp.kind] }}
@@ -111,7 +111,7 @@ export default {
             this.groupInfoArr = res.data.data;
             if (this.groupInfoArr.length > 0)
               this.groupInfoArrIsEmpty = 0;
-            this.totalPages = parseInt((this.groupInfoArr.length - 1) / 3 + 1);
+            this.totalPages = parseInt(parseInt((this.groupInfoArr.length - 1) / 3) + 1);
             this.sliceGroupInfoArr = this.groupInfoArr.slice((this.currentPage-1) * 3, this.currentPage * 3);
           }
           else if (res.data.code === 403) {

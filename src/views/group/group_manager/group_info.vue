@@ -61,7 +61,7 @@
 
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>小组等级：{{ parseInt((groupInfo.allexp - 1) / 10 + 1) }}</v-list-item-title>
+            <v-list-item-title>小组等级：{{ parseInt(parseInt((groupInfo.allexp - 1) / 10) + 1) }}</v-list-item-title>
             <v-list-item-subtitle>
               近期活跃度：{{ groupInfo.recexp }}
             </v-list-item-subtitle>
@@ -286,7 +286,11 @@ export default {
       if (tmp.type === "on") {
         UserFailGroupPlan(localStorage.getItem("id"), tmp.planId).then(
             res => {
-              if (res.data.code !== 200) {
+              if (res.data.code === 406) {
+                alert("您已被封！");
+                tmp.type = "on";
+              }
+              else if (res.data.code !== 200) {
                 alert("数据错误！")
                 tmp.type = "on";
               }
@@ -301,7 +305,11 @@ export default {
       else {
         UserDoGroupPlan(localStorage.getItem("id"), tmp.planId).then(
             res => {
-              if (res.data.code !== 200) {
+              if (res.data.code === 406) {
+                alert("您已被封！");
+                tmp.type = "off";
+              }
+              else if (res.data.code !== 200) {
                 alert("您还没有加入该组！");
                 tmp.type = 'off';
               }
