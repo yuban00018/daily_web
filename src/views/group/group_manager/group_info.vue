@@ -260,6 +260,8 @@ export default {
         res => {
           if (res.data.code === 200) {
             this.groupPlan = res.data.data;
+            for (var i = 0; i < this.groupPlan.length; i++)
+                this.groupPlan[i].type = this.groupPlan[i].type === "on" ? "撤销" : "完成";
             // console.log(this.groupPlan);
             if (this.groupPlan.length > 0)
               this.groupPlanIsEmpty = 0;
@@ -283,23 +285,23 @@ export default {
       return words;
     },
     dealWith(tmp) {
-      if (tmp.type === "on") {
+      if (tmp.type === "撤销") {
         UserFailGroupPlan(localStorage.getItem("id"), tmp.planId).then(
             res => {
               if (res.data.code === 406) {
                 alert("您已被封！");
-                tmp.type = "on";
+                tmp.type = "撤销";
               }
               else if (res.data.code !== 200) {
                 alert("数据错误！")
-                tmp.type = "on";
+                tmp.type = "撤销";
               }
               else
-                tmp.type = "off";
+                tmp.type = "完成";
             }
         ).catch(err=>{
           this.$message.error(err);
-          tmp.type = "on";
+          tmp.type = "撤销";
         })
       }
       else {
@@ -307,18 +309,18 @@ export default {
             res => {
               if (res.data.code === 406) {
                 alert("您已被封！");
-                tmp.type = "off";
+                tmp.type = "完成";
               }
               else if (res.data.code !== 200) {
                 alert("您还没有加入该组！");
-                tmp.type = 'off';
+                tmp.type = '完成';
               }
               else
-                tmp.type = "on";
+                tmp.type = "撤销";
             }
         ).catch(err=>{
           this.$message.error(err);
-          tmp.type = 'off';
+          tmp.type = '完成';
         })
       }
     },
