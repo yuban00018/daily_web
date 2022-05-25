@@ -52,7 +52,7 @@
 </template >
 
 <script >
-import {GetGroupInfoByKind} from "../../../api/group";
+import {GetGroupInfoByKind, UserJoinGroup} from "../../../api/group";
 export default {
   name: "common_group",
   props: ['lnk_type'],
@@ -61,10 +61,12 @@ export default {
     GetGroupInfoByKind(this.kinds[this.lnk_type]).then(
         res => {
           if (res.data.code === 200) {
-            // console.log(res.data.data);
-            this.recommendList = res.data.data;
-            if (this.recommendList.length === 0)
+            if (res.data.data === null)
               this.recommendListIsEmpty = 1;
+            else {
+              this.recommendListIsEmpty = 0;
+              this.recommendList = res.data.data;
+            }
           }
           else {
             this.errorMessage = "推荐信息出错";
@@ -99,7 +101,31 @@ export default {
         words += ". . .";
       }
       return words;
-    }
+    },
+    join(tmp) {
+      UserJoinGroup(localStorage.getItem("id"), tmp.groupId).then(
+          res => {
+            // console.log("res.data.code: " + res.data.code);
+            if (res.data.code === 200) {
+              alert("加入成功！")
+            }
+            else if (res.data.code === 403) {
+              alert("您已经加入过了！")
+            }
+            else if (res.data.code === 405) {
+              alert("数据信息错误！")
+            }
+          }
+      ).catch(err=>{
+        this.$message.error(err);
+      })
+    },
+    find(tmp) {
+      this.$router.replace({path: '/group/group_info', query: {group_id: tmp.groupId}})
+          .catch((err) => {
+            this.$message.error(err);
+          });
+    },
   }
 }
 </script >
