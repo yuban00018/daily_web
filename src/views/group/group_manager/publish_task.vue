@@ -144,7 +144,8 @@
 </template >
 
 <script >
-import {CreateOrModifyPlanInfo, GetPlanInfoByPlanId} from "../../../api/group";
+import {CreateOrModifyPlanInfo, GetPlanInfoByPlanId} from "@/api/group";
+import {store} from "@/api/commonVar";
 
 export default {
   name: "publish_task",
@@ -180,7 +181,7 @@ export default {
               localStorage.setItem('groupId', res.data.data.groupId);
               this.planId = res.data.data.planId;
             } else {
-              alert("未找到该任务！请返回！");
+              store.setMessage("未找到该任务！请返回！");
             }
           }
       ).catch(err => {
@@ -221,12 +222,12 @@ export default {
             // console.log(res);
             if (res.data.code === 200) {
               if (tmp.groupId === -1)
-                alert("创建小组成功！");
+                store.setMessage("创建小组成功！");
               else
-                alert("修改小组成功！");
+                store.setMessage("修改小组成功！");
             }
             else if (res.data.code !== 200) {
-              alert("失败！");
+              store.setMessage("失败！");
             }
           }
       ).catch(err=>{

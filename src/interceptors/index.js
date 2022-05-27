@@ -1,5 +1,6 @@
 import axios from "axios";
 import router from "@/router";
+import {store} from "@/api/commonVar";
 
 axios.interceptors.request.use(function(config)
 {
@@ -11,7 +12,7 @@ axios.interceptors.request.use(function(config)
 },(error)=>{
     router.push('/').then(res => {console.log(res)});
     if(error.response){
-        alert(error.response.data.message);
+        store.setMessage(error.response.data.message);
     }
     localStorage.clear();
     return Promise.reject(error);
@@ -23,7 +24,7 @@ axios.interceptors.response.use((res) => {
     //console.log(Object.assign({},error));
     router.push('/').then(res => {console.log(res)});
     if(error.response){
-        alert(error.response.data.message);
+        store.setMessage(error.response.data.message);
     }
     localStorage.clear();
     return Promise.reject(error);

@@ -81,6 +81,19 @@
     <!-- 根据应用组件来调整你的内容 -->
     <v-main>
       <v-container fluid id="scroll">
+        <v-snackbar v-model="snackbarState.showSnack">
+          {{ snackbarState.message }}
+          <template v-slot:action="{ attrs }">
+            <v-btn
+                color="blue"
+                text
+                v-bind="attrs"
+                @click="snackbarState.showSnack = false"
+            >
+              关闭
+            </v-btn>
+          </template>
+        </v-snackbar>
         <homepage></homepage>
       </v-container>
     </v-main>
@@ -93,6 +106,8 @@
 <script>
 
 import Homepage from "@/views/homepage";
+import {store} from "@/api/commonVar"
+
 export default {
   name: 'App',
 
@@ -101,6 +116,7 @@ export default {
   },
 
   data: () => ({
+    snackbarState: store.state,
     drawer: false,
     selectedVertical:null,
     selectedMenu: null,
@@ -120,7 +136,9 @@ export default {
       this.$router.push(path[this.selectedMenu])
     },
     selectedVertical(){
-      console.log(this.selectedVertical)
+      //console.log(this.selectedVertical)
+      this.$router.push('/')
+      localStorage.clear()
     }
   },
 };
