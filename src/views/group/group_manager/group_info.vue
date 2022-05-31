@@ -288,7 +288,9 @@ export default {
       if (tmp.type === "撤销") {
         UserFailGroupPlan(localStorage.getItem("id"), tmp.planId).then(
             res => {
+              console.log(res.data.code)
               if (res.data.code === 406) {
+                this.jmp("../../");
                 alert("您已被封！");
                 tmp.type = "撤销";
               }
@@ -308,6 +310,7 @@ export default {
         UserDoGroupPlan(localStorage.getItem("id"), tmp.planId).then(
             res => {
               if (res.data.code === 406) {
+                this.jmp("../../");
                 alert("您已被封！");
                 tmp.type = "完成";
               }

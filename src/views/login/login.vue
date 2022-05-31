@@ -145,17 +145,12 @@ export default {
       Submit(this.name, this.password).then(res => {
         this.isLoading = false;
         if (res.data.code === 200) {
-          this.showLoginError = false;
           localStorage.setItem("id", res.data.data.id);
           localStorage.setItem("name", res.data.data.name);
           localStorage.setItem("avatar", res.data.data.avatar);
           localStorage.setItem("TokenKey", res.data.data.token); //SetToken不能正常工作
           localStorage.setItem("signUpDate", res.data.data.signUpDate);
           this.$router.push("/todo")
-        } else if (res.data.code === 406) {
-          this.showLoginError = true
-          this.errorMessage = "用户被封"
-          this.password = ""
         } else {
           store.setMessage(res.data.message);
         }

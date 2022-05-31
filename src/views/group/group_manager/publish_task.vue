@@ -222,9 +222,9 @@ export default {
             // console.log(res);
             if (res.data.code === 200) {
               if (tmp.groupId === -1)
-                store.setMessage("创建小组成功！");
+                store.setMessage("创建小组任务成功！");
               else
-                store.setMessage("修改小组成功！");
+                store.setMessage("修改小组任务成功！");
             }
             else if (res.data.code !== 200) {
               store.setMessage("失败！");
@@ -233,7 +233,7 @@ export default {
       ).catch(err=>{
         this.$message.error(err);
       })
-      this.$router.go(-1);
+      this.$router.replace("my_group/show");
     },
   }
 }
